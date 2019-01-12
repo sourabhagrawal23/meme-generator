@@ -5,12 +5,12 @@ class MemeGenerator extends React.Component {
     constructor(){
         super()
         this.state = {
-            topText: "",
-            bottomText: "",
+            memeText: "",
             randomPic : "http://i.imgflip.com/1bij.jpg",
             allMemePics : []
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
     
     componentDidMount(){
@@ -28,30 +28,32 @@ class MemeGenerator extends React.Component {
        this.setState({[name] : value})
     }
 
+
+    handleSubmit(ev){
+       ev.preventDefault()
+       const randNum = Math.floor(Math.random() * this.state.allMemePics.length)
+       this.setState({randomPic: this.state.allMemePics[randNum].url, memeText: ''})
+    }
+
     render() {
         return (
             <div>
-                <form className="meme-form">
+                <form className="meme-form" onSubmit={this.handleSubmit}>
+                    
                     <input 
                         type="text"
-                        name="topText"
-                        placeholder="Top Text"
-                        value={this.state.topText}
-                        onChange ={this.handleChange}/>
-
-                    <input 
-                        type="text"
-                        name="bottomText"
-                        placeholder="Bottom Text"
-                        value={this.state.bottomText}
-                        onChange ={this.handleChange}/> 
+                        name="memeText"
+                        placeholder="Meme Text"
+                        value={this.state.memeText}
+                        onChange ={this.handleChange}
+                        maxlength="50"/> 
                 
-                    <button>Gen</button>
+                    <button>NEW</button>
+
                 </form>
                 <div className="meme">
                     <img src={this.state.randomPic} alt="" />
-                    <h2 className="top">{this.state.topText}</h2>
-                    <h2 className="bottom">{this.state.bottomText}</h2>
+                    <h2 className="bottom">{this.state.memeText}</h2>
                 </div>
             </div>
         )
